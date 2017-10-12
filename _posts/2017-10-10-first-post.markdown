@@ -11,9 +11,9 @@ Alright here we go.  I'm testing out setting up a blog with Jekyll and Github pa
 It was pretty easy to follow and here are the results! ... I mean...isn't this great.
 I plan on sharing little interesting tidbits I've discovered on this road of software development.
  <br>
-<br>
-tidbit.
+ <br>
+ tidbit
 
-Let's test adding an image:
-<br>
-![Star](../images/full-star.pdf)
+
+
+
