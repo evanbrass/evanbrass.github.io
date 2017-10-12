@@ -13,3 +13,7 @@ I plan on sharing little interesting tidbits I've discovered on this road of sof
  <br>
 <br>
 tidbit.
+
+Let's test adding an image:
+<br>
+![Star](../images/full-star.pdf)
