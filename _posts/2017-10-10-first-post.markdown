@@ -9,10 +9,6 @@ Alright here we go.  I'm testing out setting up a blog with Jekyll and Github pa
 [Guide to blogging with github and jekyll](https://devblast.com/b/create-a-static-websiteblog-with-jekyll-and-github-pages) 
 
 It was pretty easy to follow and here are the results! ... I mean...isn't this great.
-I plan on sharing little interesting tidbits I've discovered on this road of software development.
- <br>
- <br>
- tidbit
 
 
 
