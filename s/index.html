@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Someone shared a NAM Sandwich guitar tone with you. Open it in NAM Sandwich for iPhone and iPad.">
+    <meta name="author" content="Evan Brass">
+
+    <meta property="og:title" content="A sandwich was shared with you">
+    <meta property="og:description" content="Open it in NAM Sandwich — the Neural Amp Modeler player for iPhone and iPad.">
+    <meta property="og:type" content="website">
+
+    <title>NAM Sandwich — Shared Sandwich</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/scrolling-nav.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+    <style>
+        body { font-family: 'Open Sans', sans-serif; }
+        .share { max-width: 620px; margin: 0 auto; padding: 60px 20px 80px; text-align: center; }
+        .share h1 { margin-bottom: 10px; font-weight: 300; }
+        .share .name { font-size: 26px; font-weight: 400; margin: 0 0 6px; }
+        .share .layers { color: #888; margin-bottom: 32px; }
+        .share p.lede { color: #555; margin-bottom: 32px; }
+        .share .cta { display: inline-block; padding: 14px 28px; background: #9D1B18; color: #fff;
+                      border-radius: 10px; text-decoration: none; font-size: 17px; }
+        .share .cta:hover, .share .cta:focus { background: #7d1512; color: #fff; text-decoration: none; }
+        .share .note { color: #888; font-size: 14px; margin-top: 34px; line-height: 1.6; }
+        .share hr { margin: 40px 0; }
+    </style>
+
+</head>
+
+<body>
+
+  <div class="share">
+
+    <h1>A sandwich was shared with you</h1>
+
+    <p class="name" id="name"></p>
+    <p class="layers" id="layers"></p>
+
+    <p class="lede">
+      NAM Sandwich plays Neural Amp Modeler captures &mdash; real amps and pedals, profiled by the
+      people who own them &mdash; through a chain you build yourself. Install it, then open this
+      link again and the sandwich loads straight in.
+    </p>
+
+    <p>
+      <a class="cta" href="https://apps.apple.com/app/id6784709038">Get NAM Sandwich</a>
+    </p>
+
+    <hr>
+
+    <p class="note">
+      Already have it? Open this link on your iPhone or iPad and it goes straight to the app.<br>
+      Nothing about this sandwich is sent to us &mdash; it travels in the part of the link your
+      browser keeps to itself, and never reaches a server.
+    </p>
+
+  </div>
+
+  <script>
+  // The sandwich rides in the URL fragment as `1.<base64url of a raw-DEFLATE JSON document>`.
+  // Reading it here is purely so the page can say WHICH sandwich; everything below is best-effort
+  // and the page reads correctly if any of it fails (an older browser, a truncated link).
+  (async function () {
+    var nameEl = document.getElementById('name');
+    var layersEl = document.getElementById('layers');
+    try {
+      var fragment = window.location.hash.replace(/^#/, '');
+      if (!fragment) return;
+      var dot = fragment.indexOf('.');
+      if (dot < 1 || fragment.slice(0, dot) !== '1') return;
+
+      var b64 = fragment.slice(dot + 1).replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) { b64 += '='; }
+      var binary = atob(b64);
+      var bytes = new Uint8Array(binary.length);
+      for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
+
+      // Apple's `.zlib` compression is RAW DEFLATE (RFC 1951) with no zlib header, so this is
+      // 'deflate-raw' and not 'deflate'. Safari 16.4+ / Chrome 103+; anything older just skips.
+      if (typeof DecompressionStream === 'undefined') { return; }
+      var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      var json = await new Response(stream).text();
+      var doc = JSON.parse(json);
+
+      var sandwich = (doc.sandwiches || [])[0];
+      if (!sandwich || !sandwich.name) { return; }
+      nameEl.textContent = '“' + sandwich.name + '”';
+
+      var live = JSON.parse(sandwich.blob || '{}');
+      var count = (live.layers || []).length;
+      if (count) { layersEl.textContent = count + (count === 1 ? ' layer' : ' layers'); }
+    } catch (e) {
+      // Deliberately silent — the page's job is the App Store link, not the preview.
+    }
+  })();
+  </script>
+
+</body>
+
+</html>

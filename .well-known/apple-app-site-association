@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["M8EW3A763J.com.evanbrass.namsandwich"],
+        "components": [
+          { "/": "/s/", "comment": "A shared sandwich; the payload is in the fragment." },
+          { "/": "/s/*", "comment": "Same, tolerating a trailing path." }
+        ]
+      }
+    ]
+  }
+}
