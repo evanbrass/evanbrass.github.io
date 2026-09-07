@@ -38,6 +38,34 @@
   <!--Google font-->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 
+  <!-- NAM Sandwich screenshot phone frame -->
+  <style>
+    .phone-frame {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 30px;
+      padding: 12px;
+      background: #1c1c1e;
+      border-radius: 44px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    .phone-screen {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #f7f2e9;
+    }
+    .phone-shot {
+      width: 100%;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .phone-shot:first-child { position: relative; }
+    .phone-shot:not(:first-child) { position: absolute; top: 0; left: 0; }
+    .phone-shot.active { opacity: 1; }
+  </style>
+
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -98,8 +126,21 @@
       <div class="container">
         <!-- NAM Sandwich -->
         <div class="row">
-          <div id="namsandwich-image" class="row game-title col-sm-12 col-md-6 col-md-offset-3">
-            <img class="game-title-image" src="images/namsandwich-icon.png">
+          <div class="col-xs-12">
+            <h2 class="app-title" style="color: rgb(100, 100, 100);">NAM Sandwich</h2>
+          </div>
+
+          <!-- Cycling screenshots in a phone frame -->
+          <div class="row col-xs-12">
+            <div id="namsandwich-phone" class="phone-frame">
+              <div class="phone-screen">
+                <img class="phone-shot active" src="images/namsandwich-edit.png" alt="NAM Sandwich Edit screen">
+                <img class="phone-shot" src="images/namsandwich-menu.png" alt="NAM Sandwich Menu screen">
+                <img class="phone-shot" src="images/namsandwich-perform.png" alt="NAM Sandwich Perform screen">
+                <img class="phone-shot" src="images/namsandwich-layer.png" alt="NAM Sandwich Add a Layer screen">
+                <img class="phone-shot" src="images/namsandwich-tuner.png" alt="NAM Sandwich Tuner screen">
+              </div>
+            </div>
           </div>
 
           <!--Blurb-->
@@ -136,6 +177,9 @@
 
         <!-- Night White-->
         <div class="row">
+          <div class="col-xs-12">
+            <h2 class="app-title" style="color: rgb(100, 100, 100);">Night White</h2>
+          </div>
           <div id="stats-image"  class="row game-title col-sm-12 col-md-6 col-md-offset-3">
             <a href="https://itunes.apple.com/us/app/night-white/id1395060418?mt=8">
               <img class="game-title-image" src="images/night-white-2.jpg">
@@ -431,6 +475,20 @@
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
+
+    <!-- NAM Sandwich screenshot cycler -->
+    <script>
+      (function () {
+        var shots = document.querySelectorAll('#namsandwich-phone .phone-shot');
+        if (shots.length < 2) return;
+        var i = 0;
+        setInterval(function () {
+          shots[i].classList.remove('active');
+          i = (i + 1) % shots.length;
+          shots[i].classList.add('active');
+        }, 2000);
+      })();
+    </script>
 </body>
 
 </html>

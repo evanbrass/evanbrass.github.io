@@ -118,6 +118,14 @@ h1 {
     margin-bottom: 1.4em;
     margin-top: 1em;
 }
+.app-title {
+    text-align: center;
+    font-weight: 300;
+    font-size: 2.6em;
+    color: rgb(100, 100, 100);
+    margin-top: 0.6em;
+    margin-bottom: 0.4em;
+}
 .game-title-image {
     width:60%;
 }
