@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.evanbrass.namsandwich",
+      "sha256_cert_fingerprints": [
+        "B0:82:9A:1E:F0:01:18:AA:3E:97:AA:EC:78:11:29:04:9A:72:B9:00:43:61:77:92:D2:2C:9C:B9:C2:41:13:33",
+        "29:41:7B:31:90:58:9B:97:FB:31:51:8B:4A:B3:26:C7:93:29:89:60:A2:0A:0A:2F:F9:B4:62:DF:05:03:C3:B6"
+      ]
+    }
+  }
+]
