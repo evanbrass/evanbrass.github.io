@@ -6,12 +6,33 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Someone shared a NAM Sandwich guitar tone with you. Open it in NAM Sandwich for iPhone and iPad.">
+    <meta name="description" content="Someone shared a NAM Sandwich guitar tone with you. Open it in NAM Sandwich.">
     <meta name="author" content="Evan Brass">
 
+    <!-- The link-preview card a messaging app draws for this URL. og:image is what puts the app's
+         icon in the bubble; without it the link renders as bare text, which is what a 1.5 KB URL
+         looks like at its worst.
+         ⚠️ It cannot name the sandwich. The payload lives in the URL FRAGMENT, which browsers and
+         crawlers never send to the server — that is the whole reason there is no backend, and the
+         cost is a preview that has to be generic. Naming it would mean moving the name into the
+         query string, i.e. sending every shared sandwich's name to the host's logs. -->
+    <meta property="og:site_name" content="NAM Sandwich">
     <meta property="og:title" content="A sandwich was shared with you">
-    <meta property="og:description" content="Open it in NAM Sandwich — the Neural Amp Modeler player for iPhone and iPad.">
+    <meta property="og:description" content="Open it in NAM Sandwich — the Neural Amp Modeler player for guitar.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://evanbrass.com/s/">
+    <meta property="og:image" content="https://evanbrass.com/images/namsandwich-icon.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:image:alt" content="The NAM Sandwich app icon">
+
+    <!-- ⚠️ `summary`, not `summary_large_image` — the icon is square, and the wide card would crop
+         it to a letterbox strip. -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="A sandwich was shared with you">
+    <meta name="twitter:description" content="Open it in NAM Sandwich — the Neural Amp Modeler player for guitar.">
+    <meta name="twitter:image" content="https://evanbrass.com/images/namsandwich-icon.png">
 
     <title>NAM Sandwich — Shared Sandwich</title>
 
@@ -57,7 +78,7 @@
     <hr>
 
     <p class="note">
-      Already have it? Open this link on your iPhone or iPad and it goes straight to the app.<br>
+      Already have it? Open this link on the device you play through and it goes straight to the app.<br>
       Nothing about this sandwich is sent to us &mdash; it travels in the part of the link your
       browser keeps to itself, and never reaches a server.
     </p>
