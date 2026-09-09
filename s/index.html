@@ -51,6 +51,9 @@
                       border-radius: 10px; text-decoration: none; font-size: 17px; }
         .share .cta:hover, .share .cta:focus { background: #7d1512; color: #fff; text-decoration: none; }
         .share .note { color: #888; font-size: 14px; margin-top: 34px; line-height: 1.6; }
+        .share .get { color: #888; font-size: 15px; margin-top: 18px; }
+        .share .get a { color: #9D1B18; }
+        .share [hidden] { display: none; }
         .share hr { margin: 40px 0; }
     </style>
 
@@ -72,54 +75,109 @@
     </p>
 
     <p>
-      <a class="cta" href="https://apps.apple.com/app/id6784709038">Get NAM Sandwich</a>
+      <a class="cta" id="open" href="#">Open in NAM Sandwich</a>
+    </p>
+
+    <p class="get">
+      Don't have it yet? <a id="store" href="https://apps.apple.com/app/id6784709038">Get NAM Sandwich</a>
     </p>
 
     <hr>
 
+    <p class="note" id="webview-note" hidden>
+      Tapping a link inside Messenger, Instagram or Facebook opens it in their own browser, which
+      can't hand it to the app. Use their <strong>&hellip;</strong> menu &rarr;
+      <strong>Open in browser</strong>, then tap the button above.
+    </p>
+
     <p class="note">
-      Already have it? Open this link on the device you play through and it goes straight to the app.<br>
-      Nothing about this sandwich is sent to us &mdash; it travels in the part of the link your
-      browser keeps to itself, and never reaches a server.
+      Nothing you play is sent to us. A shared sandwich carries its settings and the names of the
+      captures it uses &mdash; never the captures themselves.
     </p>
 
   </div>
 
   <script>
-  // The sandwich rides in the URL fragment as `1.<base64url of a raw-DEFLATE JSON document>`.
-  // Reading it here is purely so the page can say WHICH sandwich; everything below is best-effort
-  // and the page reads correctly if any of it fails (an older browser, a truncated link).
+  // Two jobs: point every button at the platform in front of us, and say WHICH sandwich this is.
+  // ⚠️ Both are best-effort — the page has to read correctly with all of it failing.
+  (function () {
+    var ua = navigator.userAgent || '';
+    var android = /android/i.test(ua);
+    var apple = /iphone|ipad|ipod/i.test(ua) ||
+                (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+
+    // ⚠️ The old page sent EVERYONE to the App Store, Android included.
+    if (android) {
+      document.getElementById('store').href =
+        'https://play.google.com/store/apps/details?id=com.evanbrass.namsandwich';
+    }
+
+    var openBtn = document.getElementById('open');
+    openBtn.href = window.location.href;
+
+    // ⚠️ Facebook's, Instagram's and Messenger's in-app browsers never hand a link to the OS, so a
+    // universal link / app link cannot fire from inside one. On Android an `intent:` URL escapes
+    // anyway; on iOS nothing does, so the note below is the whole remedy there.
+    // ⚠️ On Apple the button is HIDDEN rather than left to fail: there is no scheme it could use
+    // from in here, and a button that does nothing is worse than the instruction that works.
+    var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger/i.test(ua);
+    if (inApp && apple) {
+      document.getElementById('webview-note').hidden = false;
+      openBtn.hidden = true;
+    }
+
+    // ⚠️ An intent: URL keeps its own payload after the `#`, so it can only carry a SHORT link.
+    // A long link's document lives in the fragment and has to stay an https URL.
+    if (android && !window.location.hash && /^\/s\/[a-z2-7]{8,32}$/.test(window.location.pathname)) {
+      openBtn.href = 'intent://' + window.location.host + window.location.pathname +
+        '#Intent;scheme=https;package=com.evanbrass.namsandwich;S.browser_fallback_url=' +
+        encodeURIComponent(window.location.href) + ';end';
+    }
+  })();
+
+  // Naming the sandwich. A long link carries the document in its fragment; a short one is fetched
+  // back from the same store the app reads.
   (async function () {
     var nameEl = document.getElementById('name');
     var layersEl = document.getElementById('layers');
-    try {
-      var fragment = window.location.hash.replace(/^#/, '');
-      if (!fragment) return;
-      var dot = fragment.indexOf('.');
-      if (dot < 1 || fragment.slice(0, dot) !== '1') return;
 
-      var b64 = fragment.slice(dot + 1).replace(/-/g, '+').replace(/_/g, '/');
+    function show(payload) {
+      var dot = payload.indexOf('.');
+      if (dot < 1 || payload.slice(0, dot) !== '1') return null;
+      var b64 = payload.slice(dot + 1).replace(/-/g, '+').replace(/_/g, '/');
       while (b64.length % 4) { b64 += '='; }
       var binary = atob(b64);
       var bytes = new Uint8Array(binary.length);
       for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
+      // ⚠️ Apple's `.zlib` is RAW DEFLATE with no zlib header, so this is 'deflate-raw'.
+      if (typeof DecompressionStream === 'undefined') return null;
+      return new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    }
 
-      // Apple's `.zlib` compression is RAW DEFLATE (RFC 1951) with no zlib header, so this is
-      // 'deflate-raw' and not 'deflate'. Safari 16.4+ / Chrome 103+; anything older just skips.
-      if (typeof DecompressionStream === 'undefined') { return; }
-      var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
-      var json = await new Response(stream).text();
-      var doc = JSON.parse(json);
+    try {
+      var payload = window.location.hash.replace(/^#/, '');
+      if (!payload) {
+        var id = window.location.pathname.replace(/^\/s\//, '').replace(/\/+$/, '');
+        if (!/^[a-z2-7]{8,32}$/.test(id)) return;
+        var stored = await fetch('/s/' + id + '?p=1');
+        if (!stored.ok) return;
+        payload = (await stored.json()).p || '';
+        if (!payload) return;
+      }
+
+      var stream = show(payload);
+      if (!stream) return;
+      var doc = JSON.parse(await new Response(stream).text());
 
       var sandwich = (doc.sandwiches || [])[0];
-      if (!sandwich || !sandwich.name) { return; }
-      nameEl.textContent = '“' + sandwich.name + '”';
+      if (!sandwich || !sandwich.name) return;
+      nameEl.textContent = '\u201C' + sandwich.name + '\u201D';
 
       var live = JSON.parse(sandwich.blob || '{}');
       var count = (live.layers || []).length;
-      if (count) { layersEl.textContent = count + (count === 1 ? ' layer' : ' layers'); }
+      if (count) layersEl.textContent = count + (count === 1 ? ' layer' : ' layers');
     } catch (e) {
-      // Deliberately silent — the page's job is the App Store link, not the preview.
+      // Deliberately silent — the page's job is the buttons, not the preview.
     }
   })();
   </script>
