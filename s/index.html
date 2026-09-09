@@ -85,9 +85,9 @@
     <hr>
 
     <p class="note" id="webview-note" hidden>
-      Tapping a link inside Messenger, Instagram or Facebook opens it in their own browser, which
-      can't hand it to the app. Use their <strong>&hellip;</strong> menu &rarr;
-      <strong>Open in browser</strong>, then tap the button above.
+      Nothing happened? Either NAM Sandwich isn't installed on this device yet, or this app's
+      built-in browser blocked the hand-off &mdash; open the link in Safari or Chrome and tap the
+      button again.
     </p>
 
     <p class="note">
@@ -118,13 +118,16 @@
     // ⚠️ Facebook's, Instagram's and Messenger's in-app browsers never hand a link to the OS, so a
     // universal link / app link cannot fire from inside one. On Android an `intent:` URL escapes
     // anyway; on iOS nothing does, so the note below is the whole remedy there.
-    // ⚠️ On Apple the button is HIDDEN rather than left to fail: there is no scheme it could use
-    // from in here, and a button that does nothing is worse than the instruction that works.
-    var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger/i.test(ua);
-    if (inApp && apple) {
-      document.getElementById('webview-note').hidden = false;
-      openBtn.hidden = true;
+    // ⚠️ On Apple the button uses the app's own SCHEME, not the https link. A universal link can't
+    // fire from an in-app browser, and Apple won't open an app for a universal link on the page's
+    // OWN domain either — so https would be dead in both places the button matters.
+    if (apple) {
+      openBtn.href = 'namsandwich://' +
+        window.location.pathname.replace(/^\//, '').replace(/\/$/, '') + window.location.hash;
     }
+
+    var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger/i.test(ua);
+    if (inApp) document.getElementById('webview-note').hidden = false;
 
     // ⚠️ An intent: URL keeps its own payload after the `#`, so it can only carry a SHORT link.
     // A long link's document lives in the fragment and has to stay an https URL.
