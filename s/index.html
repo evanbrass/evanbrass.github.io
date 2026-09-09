@@ -127,7 +127,21 @@
     }
 
     var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger/i.test(ua);
-    if (inApp) document.getElementById('webview-note').hidden = false;
+    var meta = /FBAN|FBAV|FB_IAB|Instagram/i.test(ua);
+    var note = document.getElementById('webview-note');
+    if (inApp) note.hidden = false;
+
+    // ⚠️ **Meta's in-app browser refuses a custom scheme outright** — device-tested in Messenger,
+    // where the button simply hangs. `x-safari-` is the one prefix it honours: it hands the URL to
+    // Safari, where the scheme does work. So on iOS inside Facebook, Messenger or Instagram the
+    // button's job is to LEAVE, and opening the app is the second tap.
+    // ⚠️ Android needs none of this — an `intent:` URL escapes their webview by itself.
+    if (apple && meta) {
+      openBtn.href = 'x-safari-' + window.location.href;
+      openBtn.textContent = 'Open in Safari';
+      note.textContent = 'Messenger and Instagram can\u2019t hand a link to an app. ' +
+        'This opens the page in Safari \u2014 tap \u201COpen in NAM Sandwich\u201D there.';
+    }
 
     // ⚠️ An intent: URL keeps its own payload after the `#`, so it can only carry a SHORT link.
     // A long link's document lives in the fragment and has to stay an https URL.
