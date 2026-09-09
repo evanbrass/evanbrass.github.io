@@ -40,7 +40,7 @@
   <div class="policy">
 
     <h1>Privacy Policy — NAM Sandwich</h1>
-    <p class="dates"><strong>Effective date:</strong> June 27, 2026 &nbsp;·&nbsp; <strong>Last updated:</strong> August 18, 2026</p>
+    <p class="dates"><strong>Effective date:</strong> June 27, 2026 &nbsp;·&nbsp; <strong>Last updated:</strong> September 9, 2026</p>
 
     <p>
       NAM Sandwich (&ldquo;the app&rdquo;) is a guitar amp-modeling app for iOS and Android developed
@@ -59,9 +59,9 @@
     <h2>Short version</h2>
     <ul>
       <li><strong>Your guitar audio is processed live on your device and is never recorded, stored, or transmitted.</strong></li>
-      <li>The app has <strong>no analytics, no tracking, no advertising, and no developer-run servers.</strong></li>
-      <li>The only data that leaves your device is when <strong>you</strong> choose to sign in to and download tones from <strong>Tone3000</strong>, when <strong>Apple</strong> or <strong>Google</strong> processes an optional purchase, and &mdash; on iOS only, if you leave it on &mdash; when your own library syncs to <strong>your</strong> iCloud account.</li>
-      <li>Your captures, sandwiches (presets), and settings are stored <strong>on your device</strong> (and, on iOS, in your private iCloud database if iCloud is enabled on the device).</li>
+      <li>The app has <strong>no analytics, no tracking and no advertising.</strong></li>
+      <li>The only data that leaves your device is when <strong>you</strong> choose to sign in to and download tones from <strong>Tone3000</strong>, when <strong>Apple</strong> or <strong>Google</strong> processes an optional purchase, when <strong>you</strong> share a sandwich with someone, and &mdash; on iOS only, when <strong>you</strong> tap Back Up Now &mdash; when your own library is copied to <strong>your</strong> iCloud account.</li>
+      <li>Your captures, sandwiches (presets), and settings are stored <strong>on your device</strong>. Nothing is copied to iCloud unless you ask for it, and nothing moves between your devices on its own.</li>
     </ul>
 
     <hr>
@@ -92,6 +92,25 @@
       we do not receive your Tone3000 account details.
     </p>
 
+    <h3>Sharing a sandwich (only when you tap Share)</h3>
+    <p>
+      When you share a sandwich, the app builds a link that opens it in NAM Sandwich on the other
+      person&rsquo;s phone. To keep that link short enough to send, the sandwich&rsquo;s
+      <strong>settings</strong> &mdash; its layers, its knob positions, its name, and the
+      <em>names and Tone3000 ids</em> of the captures it uses &mdash; are stored on our link service
+      at <code>evanbrass.com</code>, under a random-looking id, and anyone with the link can open it.
+      <strong>Capture and IR files themselves are not stored there</strong>: a Tone3000 capture
+      travels as a reference the receiving app downloads under their own account, and a capture you
+      made yourself travels inside a file you send directly, not through us.
+    </p>
+    <p>
+      A stored link <strong>expires one year after it was last opened</strong>, and we keep nothing
+      else about it. It contains no account details, no personal information, and nothing about you
+      &mdash; only the sandwich you chose to send. <strong>Nothing is stored unless you tap
+      Share</strong>, and if the link service can&rsquo;t be reached the app simply sends a longer
+      link that carries the sandwich inside it and touches no server at all.
+    </p>
+
     <h3>Purchases (optional, handled by Apple or Google)</h3>
     <p>
       If you buy the annual plan or the one-time unlock, the transaction is handled entirely by
@@ -116,20 +135,21 @@
 
     <h3>On-device storage</h3>
     <p>
-      Your downloaded captures and IR files, your saved sandwiches (presets), performance slots, and
-      app settings are stored <strong>locally on your device</strong>, using the platform&rsquo;s own
-      on-device storage (SwiftData on iOS, Room and shared preferences on Android). This data is not
-      uploaded to us or to any third party.
+      Your downloaded captures and IR files, your saved sandwiches (presets), your menus, your saved
+      loops and your app settings are stored <strong>locally on your device</strong>, using the
+      platform&rsquo;s own on-device storage (SwiftData on iOS, Room and shared preferences on
+      Android). This data is not uploaded to us or to any third party.
     </p>
     <p class="note">
-      <strong>Note on iCloud (iOS only):</strong> the app syncs your library &mdash; captures,
-      sandwiches, Perform slots and saved loops &mdash; to <strong>your own private iCloud
-      database</strong>, under your Apple Account, so it reaches your other devices and survives a
-      reinstall. It is also what the app&rsquo;s Back Up Now / Restore From iCloud commands read and
-      write. That data lives in your iCloud account, governed by Apple&rsquo;s privacy policy;
-      <strong>we have no access to it</strong>, no server of our own is involved, and you can turn it
-      off in iOS Settings by disabling iCloud for NAM Sandwich. <strong>The Android version has no
-      cloud sync at all</strong> &mdash; its library is device-local.
+      <strong>Note on iCloud backup (iOS only):</strong> the app can copy your library &mdash;
+      captures, sandwiches and saved loops &mdash; to <strong>your own private iCloud storage</strong>,
+      under your Apple Account, so you can put it back after a reinstall or on a new phone.
+      <strong>This only ever happens when you tap Back Up Now or Restore From iCloud in More &rsaquo;
+      iCloud.</strong> There is no continuous sync: nothing is uploaded in the background and nothing
+      moves between your devices on its own. That copy lives in your iCloud account, governed by
+      Apple&rsquo;s privacy policy; <strong>we have no access to it</strong> and no server of ours is
+      involved. You can delete it from iCloud in iOS Settings. <strong>The Android version has no
+      cloud backup at all</strong> &mdash; its library is device-local.
     </p>
 
     <hr>
@@ -138,7 +158,7 @@
     <ul>
       <li>We do <strong>not</strong> collect analytics or usage statistics.</li>
       <li>We do <strong>not</strong> use third-party tracking, advertising, or marketing SDKs.</li>
-      <li>We do <strong>not</strong> operate our own servers that receive your data.</li>
+      <li>We do <strong>not</strong> operate servers that receive your audio, your library, or your account details. (The one thing we host is the sharing link service described above, and only for sandwiches you choose to share.)</li>
       <li>We do <strong>not</strong> sell, rent, or share your personal information.</li>
       <li>We do <strong>not</strong> record or retain your audio.</li>
     </ul>
@@ -149,8 +169,9 @@
     <p>
       Because your captures, presets, and settings live on your device, you control them directly. You
       can delete individual captures and sandwiches in the app, and deleting the app removes all of its
-      locally stored data. On iOS, anything already synced to your iCloud account is removed by
-      deleting it in the app or by removing NAM Sandwich&rsquo;s data from iCloud in iOS Settings.
+      locally stored data. A sandwich you shared as a link is deleted from our link service one year
+      after the last time anyone opened it; email us if you want one removed sooner. On iOS, a backup
+      you made is removed by deleting NAM Sandwich&rsquo;s data from iCloud in iOS Settings.
       Files you downloaded from Tone3000 are stored locally and are removed when you delete them or
       delete the app.
     </p>
